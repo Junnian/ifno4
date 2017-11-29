@@ -46,8 +46,8 @@ class Copinfo2Spider(scrapy.Spider):
             i['ref2'] = 0
         h_index = sel.xpath('//a[contains(@title,"h")]/following::*[1]/text()').extract()
         h_index2 = sel.xpath('//a[contains(@title,"h")]/following::*[2]/text()').extract()
-        i10_index = sel.xpath('//a[contains(@title,"h")]/following::*[1]/text()').extract()
-        i10_index2 = sel.xpath('//a[contains(@title,"h")]/following::*[2]/text()').extract()
+        i10_index = sel.xpath('//a[contains(@title,"i10")]/following::*[1]/text()').extract()
+        i10_index2 = sel.xpath('//a[contains(@title,"i10")]/following::*[2]/text()').extract()
         if h_index:
             i['h_index'] = int(h_index[0])
         else: 
