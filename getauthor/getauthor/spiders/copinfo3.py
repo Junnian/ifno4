@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 import scrapy
+from getauthor.items import GetauthorItem
+from scrapy.http import Request
+from scrapy.selector import Selector
+import time
+from random import random
 
-
+Url = 'https://scholar.google.com'
 class Copinfo3Spider(scrapy.Spider):
     name = 'copinfo3'
     allowed_domains = ['scholar.google.com']

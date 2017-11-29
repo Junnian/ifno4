@@ -14,7 +14,7 @@ class GetauthorPipeline(object):
         client = pymongo.MongoClient(host=host, port=port)
         tdb = client[dbname]
 
-        # self.all = tdb['aerospace']
+        self.all = tdb['aerospace']
         # self.all = tdb['bigdata']
         # self.all = tdb['biology']
         # self.all = tdb['infornet']
@@ -23,7 +23,7 @@ class GetauthorPipeline(object):
         # self.all = tdb['shipBuild']
         
         #存第一层合著作者
-        # self.allc = tdb['aerospace_c']
+        self.allc = tdb['aerospace_c']
         # self.allc = tdb['bigdata_c']
         # self.allc = tdb['biology_c']
         # self.allc = tdb['infornet_c']
@@ -32,7 +32,7 @@ class GetauthorPipeline(object):
         # self.allc = tdb['shipBuild_c']
 
         #存第二层合著作者
-        # self.allc2 = tdb['aerospace_c2']
+        self.allc2 = tdb['aerospace_c2']
         # self.allc2 = tdb['bigdata_c2']
         # self.allc2 = tdb['biology_c2']
         # self.allc2 = tdb['infornet_c2']
@@ -41,7 +41,7 @@ class GetauthorPipeline(object):
         # self.allc2 = tdb['shipBuild_c2']
 
         #存第二层合著作者
-        # self.allc3 = tdb['aerospace_c3']
+        self.allc3 = tdb['aerospace_c3']
         # self.allc3 = tdb['bigdata_c3']
         # self.allc3 = tdb['biology_c3']
         # self.allc3 = tdb['infornet_c3']
@@ -50,7 +50,7 @@ class GetauthorPipeline(object):
         # self.allc3 = tdb['shipBuild_c3']
 
         #存无限扩展的作者
-        # self.alla = tdb['aerospace_ca']
+        self.alla = tdb['aerospace_ca']
         # self.alla = tdb['bigdata_ca']
         # self.alla = tdb['biology_ca']
         # self.alla = tdb['infornet_ca']

@@ -13,7 +13,7 @@ Url = 'https://scholar.google.com'
 class ScholarSpider(scrapy.Spider):
     name = 'scholar'
     allowed_domains = ['scholar.google.com']
-    start_urls=[]
+    start_urls=['aerospace']
 
     keys=[]
     #处理start_urls=[]
@@ -25,15 +25,15 @@ class ScholarSpider(scrapy.Spider):
     # keys = ['QC']
     # keys = ['shipB']
     
-    for key in keys:
-        file_ = 'new/'+key+'.txt'
-        with open(file_,'r') as f:
-            list_ = f.readlines()
-            for i in list_:
-                start_urls.append(i)
-                if ' ' in i:
-                    i=i.replace(' ','_')
-                    start_urls.append(i)#也就是说有下划线，没下划线的都要
+    # for key in keys:
+    #     file_ = 'new/'+key+'.txt'
+    #     with open(file_,'r') as f:
+    #         list_ = f.readlines()
+    #         for i in list_:
+    #             start_urls.append(i)
+    #             if ' ' in i:
+    #                 i=i.replace(' ','_')
+    #                 start_urls.append(i)#也就是说有下划线，没下划线的都要
 
     # keys = ['aerospace']#之后可以添加
     # keys = ['bigData']
@@ -43,15 +43,15 @@ class ScholarSpider(scrapy.Spider):
     # keys = ['QuantumCommunication']
     # keys = ['shipBuilding']
     
-    for key in keys:
-        file_ = 'key/'+key+'.txt'
-        with open(file_,'r') as f:
-            list_ = f.readlines()
-            for i in list_:
-                start_urls.append(i)
-                if ' ' in i:
-                    i=i.replace(' ','_') 
-                    start_urls.append(i)#也就是说有下划线，没下划线的都要
+    # for key in keys:
+    #     file_ = 'key/'+key+'.txt'
+    #     with open(file_,'r') as f:
+    #         list_ = f.readlines()
+    #         for i in list_:
+    #             start_urls.append(i)
+    #             if ' ' in i:
+    #                 i=i.replace(' ','_') 
+    #                 start_urls.append(i)#也就是说有下划线，没下划线的都要
 
     scrawl_ID = set(start_urls)  # 记录待爬
     finish_ID = set()  # 记录已爬
