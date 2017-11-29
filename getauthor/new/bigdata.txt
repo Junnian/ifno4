@@ -1,0 +1,81 @@
+Microarray databases
+Object hyperlinking
+Mobile database
+Autophagy database
+EDA database
+Intelligent database
+Graph database
+Spatiotemporal database
+Probabilistic database
+Database
+Spatial database
+Sequence database
+Relational database
+Distributed database
+XML database
+Very large database
+Conserved Domain Database
+Flat file database
+Analytic and enumerative statistical studies
+Semantic analytics
+Predictive analytics
+Web analytics
+Speech analytics
+Software analytics
+Visual analytics
+Search analytics
+Analytics
+Noisy text analytics
+Clickstream
+Graphics software
+Spatial network analysis software
+Web log analysis software
+Enterprise software
+Medical software
+Route planning software
+Telecommunications control software
+Public domain software
+Information repository
+Metadata repository
+National Data Repository
+HTML5
+Geospatial metadata
+Metadata
+Automatic summarization
+Supernode
+Online aggregation
+databases
+database
+analytic
+recommender
+contextual
+algorithmically
+metadata
+webserver
+aggregation
+semantic
+internet
+messaging
+multitier
+internetwork
+algorithms
+discriminant
+hypertext
+algorithmic
+data
+web
+intelligence
+analytical
+multichannel
+visualization
+server
+lookup
+unstructured
+computerized
+asynchronous
+user
+textual
+algorithm
+scanning
+
+
