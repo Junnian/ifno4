@@ -19,16 +19,6 @@ class CopinfoSpider(scrapy.Spider):
     	lists= f.readlines()
     for url in lists:
     	scrawl_url.add(url)
-        # for url in authorurl:
-        #     aurl = Url + url
-        #     if aurl not in self.peopleUrl:
-        #         self.peopleUrl.add(aurl)
-        #         yield Request(url = aurl,callback = self.parse_info)
-        # for i in lists:
-    	   #  aurl = i
-    	   #  if aurl not in self.peopleUrl:
-    		  #   yield Request(url = aurl,callback = self.parse_info)
-    		  #   self.peopleUrl.add(aurl)
 
     def start_requests(self):
        while self.scrawl_url.__len__():

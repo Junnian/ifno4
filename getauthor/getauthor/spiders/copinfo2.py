@@ -6,7 +6,6 @@ from scrapy.selector import Selector
 import time
 from random import random
 
-
 Url = 'https://scholar.google.com'
 
 class Copinfo2Spider(scrapy.Spider):

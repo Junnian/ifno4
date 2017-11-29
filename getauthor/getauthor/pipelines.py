@@ -13,7 +13,13 @@ class GetauthorPipeline(object):
         dbname = 'info'  # 设置数据库
         client = pymongo.MongoClient(host=host, port=port)
         tdb = client[dbname]
-        t = 
+        t = 0
+        if t==0:
+            self.all = tdb['test']
+            self.allc = tdb['test_c']
+            self.allc2 = tdb['test_c2']
+            self.allc3 = tdb['test_c3']
+            self.allca = tdb['tests_ca']
         if t==1:
             self.all = tdb['aerospace']
             self.allc = tdb['aerospace_c']

@@ -7,6 +7,7 @@ import time
 from random import random
 
 Url = 'https://scholar.google.com'
+
 class Copinfo3Spider(scrapy.Spider):
     name = 'copinfo3'
     allowed_domains = ['scholar.google.com']
@@ -14,6 +15,7 @@ class Copinfo3Spider(scrapy.Spider):
     start_urls = []
     scrawl_url = set()
     peopleUrl =set()#记录以爬
+
     with open(filenmame,'r') as f:
     	lists= f.readlines()
     for url in lists:

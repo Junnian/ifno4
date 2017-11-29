@@ -25,15 +25,15 @@ class ScholarSpider(scrapy.Spider):
     # keys = ['QC']
     # keys = ['shipB']
     
-    # for key in keys:
-    #     file_ = 'new/'+key+'.txt'
-    #     with open(file_,'r') as f:
-    #         list_ = f.readlines()
-    #         for i in list_:
-    #             start_urls.append(i)
-    #             if ' ' in i:
-    #                 i=i.replace(' ','_')
-    #                 start_urls.append(i)#也就是说有下划线，没下划线的都要
+    for key in keys:
+        file_ = 'new/'+key+'.txt'
+        with open(file_,'r') as f:
+            list_ = f.readlines()
+            for i in list_:
+                start_urls.append(i)
+                if ' ' in i:
+                    i=i.replace(' ','_')
+                    start_urls.append(i)#也就是说有下划线，没下划线的都要
 
     # keys = ['aerospace']#之后可以添加
     # keys = ['bigData']
@@ -43,20 +43,20 @@ class ScholarSpider(scrapy.Spider):
     # keys = ['QuantumCommunication']
     # keys = ['shipBuilding']
     
-    # for key in keys:
-    #     file_ = 'key/'+key+'.txt'
-    #     with open(file_,'r') as f:
-    #         list_ = f.readlines()
-    #         for i in list_:
-    #             start_urls.append(i)
-    #             if ' ' in i:
-    #                 i=i.replace(' ','_') 
-    #                 start_urls.append(i)#也就是说有下划线，没下划线的都要
+    for key in keys:
+        file_ = 'key/'+key+'.txt'
+        with open(file_,'r') as f:
+            list_ = f.readlines()
+            for i in list_:
+                start_urls.append(i)
+                if ' ' in i:
+                    i=i.replace(' ','_') 
+                    start_urls.append(i)#也就是说有下划线，没下划线的都要
 
     scrawl_ID = set(start_urls)  # 记录待爬
     finish_ID = set()  # 记录已爬
     peopleUrl = set() #记录已经爬的人的主页url
-
+    NextUrl = set()
     def start_requests(self):
         #不知道为什么scrawl_ID叠加的起不到相关的作用,是不是并行请求的太多了，我现在把并行的设为16，之前是100，这次应该可以了吧
         while self.scrawl_ID.__len__():
@@ -65,33 +65,23 @@ class ScholarSpider(scrapy.Spider):
             self.finish_ID.add(field)  # 加入已爬队列
             url = 'https://scholar.google.com/citations?view_op=search_authors&hl=zh-CN&mauthors=label:'+field
             yield Request(url=url, callback=self.parse1)
-
-
-    ##test
-
-
-    # def start_requests(self):
-    #     url = 'https://scholar.google.com/citations?user=7xN6JqYAAAAJ&hl=zh-CN'
-    #     yield Request(url = url,callback = self.parse_info)
+    
 
     def parse1 (self, response):
-        #这个解析函数先处理每个领域第一页的人，用selector
+        #这个解析函数先处理每个领域第一页的人,
         sel = Selector(response)
         authorurl = sel.xpath('//a[contains(@href,"/citations?user")]/@href').extract()
         t1 = response.url
         a = sel.xpath('//*[@id="gsc_authors_bottom_pag"]/div/button[2]/@onclick').extract()
-        for url in authorurl:
-            aurl = Url + url
-            if aurl not in self.peopleUrl:
-                self.peopleUrl.add(aurl)
-                yield Request(url = aurl,callback = self.parse_info)
         if a!=[]:
             b = a[0].split('\\')
             c = b[-3]
             after_author = c[3:len(c)]
             L = t1.split('&')
             next2 = L[0] + '&' + L[1] + '&' + L[2] + '&after_author=' + after_author + '&astart=' + str(10)
-            # print '-----------------1---------------------'
+
+            self.NextUrl.add(next2)
+
             yield Request(url = next2,callback = self.parse2)
 
     #主要处理某个领域第二页以后的情况
@@ -99,14 +89,6 @@ class ScholarSpider(scrapy.Spider):
         sel = Selector(response)
         authorurl = sel.xpath('//a[contains(@href,"/citations?user")]/@href').extract()
 
-        # print authorurl
-        for url in authorurl:
-            aurl = Url + url
-            if aurl not in self.peopleUrl:
-                self.peopleUrl.add(aurl)
-                yield Request(url = aurl,callback = self.parse_info)
-        
-        #获取下一页的动态
         t1 = response.url
         a = sel.xpath('//*[@id="gsc_authors_bottom_pag"]/div/button[2]/@onclick').extract()
         if a!=[]:
@@ -121,8 +103,81 @@ class ScholarSpider(scrapy.Spider):
             N = int(n) + 10
             # print N
             next = L[0] + '&' + L[1] + '&' + L[2] + '&after_author=' + after_author + '&astart=' + str(N)
-            # print '-----------------3--------------------'
-            yield  Request(url=next, callback=self.parse2)
+            self.NextUrl.add(next)
+            yield  Request(url=next, callback=self.parse2,dont_filter=True)
+
+        else:
+            while self.NextUrl.__len__():
+                nexturl = self.NextUrl.pop()
+                yield  Request(url=nexturl, callback=self.parse_pre_info,dont_filter=True)
+
+
+    def parse_pre_info(self,response):
+        sel = Selector(response)
+        authorurl = sel.xpath('//a[contains(@href,"/citations?user")]/@href').extract()
+        for url in authorurl:
+            aurl = Url + url
+            if aurl not in self.peopleUrl:
+                self.peopleUrl.add(aurl)
+                yield Request(url = aurl,callback = self.parse_info)
+
+
+    ##test
+
+
+    # def start_requests(self):
+    #     url = 'https://scholar.google.com/citations?user=7xN6JqYAAAAJ&hl=zh-CN'
+    #     yield Request(url = url,callback = self.parse_info)
+
+    # def parse1 (self, response):
+    #     #这个解析函数先处理每个领域第一页的人，用selector
+    #     sel = Selector(response)
+    #     authorurl = sel.xpath('//a[contains(@href,"/citations?user")]/@href').extract()
+    #     t1 = response.url
+    #     a = sel.xpath('//*[@id="gsc_authors_bottom_pag"]/div/button[2]/@onclick').extract()
+    #     for url in authorurl:
+    #         aurl = Url + url
+    #         if aurl not in self.peopleUrl:
+    #             self.peopleUrl.add(aurl)
+    #             yield Request(url = aurl,callback = self.parse_info)
+    #     if a!=[]:
+    #         b = a[0].split('\\')
+    #         c = b[-3]
+    #         after_author = c[3:len(c)]
+    #         L = t1.split('&')
+    #         next2 = L[0] + '&' + L[1] + '&' + L[2] + '&after_author=' + after_author + '&astart=' + str(10)
+    #         # print '-----------------1---------------------'
+    #         yield Request(url = next2,callback = self.parse2)
+
+    # #主要处理某个领域第二页以后的情况
+    # def parse2(self, response):
+    #     sel = Selector(response)
+    #     authorurl = sel.xpath('//a[contains(@href,"/citations?user")]/@href').extract()
+
+    #     # print authorurl
+    #     for url in authorurl:
+    #         aurl = Url + url
+    #         if aurl not in self.peopleUrl:
+    #             self.peopleUrl.add(aurl)
+    #             yield Request(url = aurl,callback = self.parse_info)
+        
+    #     #获取下一页的动态
+    #     t1 = response.url
+    #     a = sel.xpath('//*[@id="gsc_authors_bottom_pag"]/div/button[2]/@onclick').extract()
+    #     if a!=[]:
+    #         b = a[0].split('\\')
+    #         c = b[-3]
+    #         after_author = c[3:len(c)]
+    #         L = t1.split('&')
+    #     # n = int(t1[-2:len(t1)])
+    #     # L[-1]-7为当前页码的位数
+    #         w = len(L[-1])-7
+    #         n=L[-1][-w:]
+    #         N = int(n) + 10
+    #         # print N
+    #         next = L[0] + '&' + L[1] + '&' + L[2] + '&after_author=' + after_author + '&astart=' + str(N)
+    #         # print '-----------------3--------------------'
+    #         yield  Request(url=next, callback=self.parse2)
 
    #处理作者详情页
     def parse_info(self,response):
