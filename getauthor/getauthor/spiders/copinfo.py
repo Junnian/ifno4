@@ -82,7 +82,8 @@ class CopinfoSpider(scrapy.Spider):
         yield i
 
         # 把合著作者的信息写在一个文件夹里。设置这个爬虫运行完之后，自动开始另一个爬虫
-        with open("./copurl1.txt", "a") as f:
-            for courl in Coauthorurl:
-            	url = Url + courl
-                f.write(url + '\n')
+        if len(Coauthorurl)>0:
+            with open("./copurl1.txt", "a+") as f:
+                for courl in Coauthorurl:
+                    url = Url + courl
+                    f.write(url + '\n')
